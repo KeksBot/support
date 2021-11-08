@@ -1,2 +1,2 @@
-# support
+## Support
 KeksBot Support Bot
