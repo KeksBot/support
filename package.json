@@ -1,0 +1,23 @@
+{
+  "name": "support",
+  "version": "1.0.0",
+  "description": "KeksBot Support Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KeksBot/support.git"
+  },
+  "author": "FixlTV",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KeksBot/support/issues"
+  },
+  "homepage": "https://github.com/KeksBot/support#readme",
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "mongoose": "^6.0.12"
+  }
+}
