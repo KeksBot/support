@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/KeksBot/support#readme",
   "dependencies": {
+    "delay": "^5.0.0",
     "discord.js": "^13.3.1",
     "mongoose": "^6.0.12"
   }

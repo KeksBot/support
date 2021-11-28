@@ -47,7 +47,7 @@ const validatePermissions = (command) => {
     if(!validPermissions.includes(command.permission)) throw new Error(`Unbekannte Permission "${command.permission} bei "${command.name}"`)
 }
 
-const getcolors = require('./subcommands/getcolor')
+const getcolors = require('./getcolor')
 const getData = require('./db/getData')
 const update = require('./db/update')
 
@@ -69,6 +69,7 @@ module.exports = async (client) => {
                         command.permission = command.permission.toUpperCase()
                         validatePermissions(command)
                     }
+                    if(command.roles) command.defaultPermission = false
                     client.commands.set(command.name, command)
                     console.log(`[${client.user.username}]: ${command.name} wurde geladen.`)
                 }
@@ -79,20 +80,6 @@ module.exports = async (client) => {
     console.log(`[${client.user.username}]: Commands werden geladen.`)
     readCommands('./slashcommands')
     console.log(`[${client.user.username}]: Commands werden initialisiert.`)
-    /* Mögliches Konzept für Sprachsystem
-     * let db = await require('./db/database')()
-     * let serverdata = require('./schemas/serverdata')()
-     * let commandData = {}
-     * await client.guilds.fetch()
-     * for (const command of commands) {
-     *     
-     * }
-     * for (const guild of client.guilds) {
-     *     let data = await serverdata.findById(data.id)
-     *     if(data.lang == 'de') {
-     *         await guild.commands.set()
-     *     }
-     * }*/
     await client.guilds.fetch()
     var progress = 0
     var failedguilds = 0
@@ -127,6 +114,25 @@ module.exports = async (client) => {
                                 accepted = 0
                             }
                         })
+                } else if(command.roles) {
+                    if(typeof command.roles === 'string') command.roles = [command.roles]
+                    command.roles.forEach(name => {
+                        command.roles.indexOf(name) = (name === 'owner') ? '779969055779061770' :
+                            (name === 'mod') ? '775002147846488085' :
+                            (name === 'dev') ? '779969450383507488' :
+                            (name === 'sup') ? '779969700351180800' :
+                            (name === 'tsup') ? '792149101038927923' :
+                            (name === 'team') ? '779991897880002561' : 
+                            null
+                    })
+                    command.roles = command.roles.filter(r => r)
+                    var roles = []
+                    command.roles.forEach(r => roles.push({ 
+                        id: r.id,
+                        type: 'ROLE',
+                        permission: true
+                    }))
+                    try {await command.permissions.add({permissions})} catch {}
                 }
             })
         } catch (error) {

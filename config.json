@@ -1,3 +1,5 @@
 {
-    "token": "test"
+    "token": "ODE5NTA3ODMyMzYwNjY1MTA5.YEnoJA.h8mtKSbrs3gREHIKswt2i1RP1sE",
+    "dbpath": "mongodb://localhost:27017",
+    "path": "../KeksBot"
 }
