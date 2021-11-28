@@ -89,7 +89,7 @@ module.exports = async (client) => {
             let commands = await guild.commands.set(client.commands.array())
             await guild.roles.fetch()
             commands.array().forEach(async function(command) {
-                if(client.commands.find(c => c.name === command.name).permission) {
+                /*if(client.commands.find(c => c.name === command.name).permission) {
                     var permissions = []
                     var length = guild.roles.cache
                         .filter(r => !r.tags || (!r.tags.botId && r.tags.integrationId))
@@ -114,7 +114,7 @@ module.exports = async (client) => {
                                 accepted = 0
                             }
                         })
-                } else if(command.roles) {
+                } else */if(command.roles) {
                     if(typeof command.roles === 'string') command.roles = [command.roles]
                     command.roles.forEach(name => {
                         command.roles.indexOf(name) = (name === 'owner') ? '779969055779061770' :
@@ -132,7 +132,7 @@ module.exports = async (client) => {
                         type: 'ROLE',
                         permission: true
                     }))
-                    try {await command.permissions.add({permissions})} catch {}
+                    try {await command.permissions.add({roles})} catch {}
                 }
             })
         } catch (error) {
