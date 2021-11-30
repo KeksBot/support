@@ -114,10 +114,10 @@ module.exports = async (client) => {
                                 accepted = 0
                             }
                         })
-                } else if(command.roles) {
-                    if(typeof command.roles === 'string') command.roles = [command.roles]
-                    command.roles.forEach(name => {
-                        command.roles.indexOf(name) = (name === 'owner') ? '779969055779061770' :
+                } else if(client.commands.find(c => c.name === command.name)) {
+                    if(typeof client.commands.find(c => c.name === command.name).roles === 'string') client.commands.find(c => c.name === command.name).roles = [client.commands.find(c => c.name === command.name).roles]
+                    client.commands.find(c => c.name === command.name).roles.forEach(name => {
+                        client.commands.find(c => c.name === command.name).roles.indexOf(name) = (name === 'owner') ? '779969055779061770' :
                             (name === 'mod') ? '775002147846488085' :
                             (name === 'dev') ? '779969450383507488' :
                             (name === 'sup') ? '779969700351180800' :
@@ -125,9 +125,9 @@ module.exports = async (client) => {
                             (name === 'team') ? '779991897880002561' : 
                             null
                     })
-                    command.roles = command.roles.filter(r => r)
+                    client.commands.find(c => c.name === command.name).roles = command.roles.filter(r => r)
                     var roles = []
-                    command.roles.forEach(r => roles.push({ 
+                    client.commands.find(c => c.name === command.name).roles.forEach(r => roles.push({ 
                         id: r.id,
                         type: 'ROLE',
                         permission: true
