@@ -115,9 +115,11 @@ module.exports = async (client) => {
                             }
                         })
                 } else if(client.commands.find(c => c.name === command.name)) {
-                    if(typeof client.commands.find(c => c.name === command.name).roles === 'string') client.commands.find(c => c.name === command.name).roles = [client.commands.find(c => c.name === command.name).roles]
-                    client.commands.find(c => c.name === command.name).roles.forEach(name => {
-                        client.commands.find(c => c.name === command.name).roles.indexOf(name) = (name === 'owner') ? '779969055779061770' :
+                    var systemcommand = client.commands.find(c => c.name === command.name)
+                    if(typeof systemcommand.roles === 'string') systemcommand.roles = [systemcommand.roles]
+                    systemcommand.roles.forEach(name => {
+                        systemcommand.roles[systemcommand.roles.indexOf(name)] = 
+                            (name === 'owner') ? '779969055779061770' :
                             (name === 'mod') ? '775002147846488085' :
                             (name === 'dev') ? '779969450383507488' :
                             (name === 'sup') ? '779969700351180800' :
@@ -125,14 +127,15 @@ module.exports = async (client) => {
                             (name === 'team') ? '779991897880002561' : 
                             null
                     })
-                    client.commands.find(c => c.name === command.name).roles = command.roles.filter(r => r)
+                    console.log(systemcommand.roles)
                     var roles = []
-                    client.commands.find(c => c.name === command.name).roles.forEach(r => roles.push({ 
-                        id: r.id,
+                    systemcommand.roles.forEach(r => roles.push({ 
+                        id: r,
                         type: 'ROLE',
                         permission: true
                     }))
-                    try {await command.permissions.add({roles})} catch {}
+                    console.log(roles)
+                    try {await command.permissions.set( { permissions: roles } )} catch (error) { console.error }
                 }
             })
         } catch (error) {
