@@ -127,14 +127,12 @@ module.exports = async (client) => {
                             (name === 'team') ? '779991897880002561' : 
                             null
                     })
-                    console.log(systemcommand.roles)
                     var roles = []
                     systemcommand.roles.forEach(r => roles.push({ 
                         id: r,
                         type: 'ROLE',
                         permission: true
                     }))
-                    console.log(roles)
                     try {await command.permissions.set( { permissions: roles } )} catch (error) { console.error }
                 }
             })

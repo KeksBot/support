@@ -53,15 +53,13 @@ module.exports = {
         if(args.bot == 'keksbot') exec(`git checkout ${args.branch}`, { cwd })
         exec(`git pull`, { cwd }, async function(error, stdout, stderr) {
             if(error) {
-                console.error(error)
                 embed = new discord.MessageEmbed()
                     .setColor(color.red)
                     .setDescription('Ein Fehler ist aufgetreten. Das Update wurde nicht oder unvollständig heruntergeladen.')
                     .setTitle('Fehler')
                 return await ita.editReply({ embeds: [embed] })
             }
-            console.log(stdout.toString())
-            if(!stdout.toString().includes('Already up to date') || !stderr.toString().includes('Bereits aktuell')) {
+            if(!stdout.toString().includes('Already up to date') || !stdout.toString().includes('Bereits aktuell')) {
                 embed = new discord.MessageEmbed()
                     .setColor(color.yellow)
                     .setTitle('Update heruntergeladen')
