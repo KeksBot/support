@@ -60,6 +60,7 @@ module.exports = {
                     .setTitle('Fehler')
                 return await ita.editReply({ embeds: [embed] })
             }
+            console.log(stdout.toString())
             if(!stdout.toString().includes('Already up to date') || !stderr.toString().includes('Bereits aktuell')) {
                 embed = new discord.MessageEmbed()
                     .setColor(color.yellow)
