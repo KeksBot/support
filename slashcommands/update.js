@@ -43,7 +43,7 @@ module.exports = {
     roles: 'owner',
     async execute(ita, args, client) {
         const { color } = ita
-        let cwd = (args.bot == 'keksbot') ? path.join(process.cwd, require('../config.json').path) : process.cwd
+        let cwd = (args.bot == 'keksbot') ? path.join(process.cwd, require('../config.json').path) : process.cwd + ''
         let embed = new discord.MessageEmbed()
             .setColor(color.yellow)
             .setTitle('Update eingeleitet')
