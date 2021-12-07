@@ -37,7 +37,8 @@ module.exports = {
     async execute(ita, args, client) {
         var { user, color } = ita
         var user1 
-        try { user1 = await client.users.fetch(args.user) } catch { return embeds.error(ita, 'Unbekannter Nutzer', `\`${args.user}\` ist kein valider Account.\nBitte gib einen Nutzer von diesem Server oder eine gültige User ID an.`, true) }
+        try { user1 = await client.users.fetch(args.user) } catch {}
+        if(!user1) return embeds.error(ita, 'Unbekannter Nutzer', `\`${args.user}\` ist kein valider Account.\nBitte gib einen Nutzer von diesem Server oder eine gültige User ID an.`, true)
         user1.data = await getData('userdata', user1.id) || { cookies: 0 }
         const data = require('../data.json')
         let channel = await (await client.guilds.fetch('775001585541185546')).channels.fetch('801406480309289002')
