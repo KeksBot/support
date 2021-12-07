@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const emotes = require('./emotes.json')
 const delay = require('delay')
-const getColors = require('./subcommands/getcolor')
+const getColors = require('./getcolor')
 
 const translatepermission = (p) => {
     p = p.toUpperCase()
