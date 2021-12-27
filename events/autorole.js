@@ -24,12 +24,12 @@ module.exports = {
 		if(!member.user.bot) try {
 			member.user.createDM().then((channel) => {
 				var embed = new discord.MessageEmbed()
-					.setColor(color.normal)
+					.setColor(0xa051ae)
 					.setTitle(`Willkommen, ${member.user.username}`)
 					.setDescription(
-						`Herzlich Willkommen auf dem KeksBot Support Server, <@${member.user.username}>.\nSolltest du Fragen, <#780004713038872596> oder <#780004599787945984>s äußern wollen, benutze bitte die dafür vorgesehenen Kanäle.\nAnsonsten wünschen wir dir viel Spaß auf dem Server <:hug:862339733137129503>`
+						`Herzlich Willkommen auf dem KeksBot Support Server, <@${member.user.username}>.\nSolltest du Fragen, <#780004713038872596> oder <#780004599787945984>s äußern wollen, benutze bitte die dafür vorgesehenen Kanäle.\nAnsonsten wünschen wir dir viel Spaß auf dem Server :3`
 					)
-				channel.send(0xa051ae);
+				channel.send({ embeds: [embed] });
 			});
 		} catch (err) {}
 	}

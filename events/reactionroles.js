@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 
 module.exports = {
-    name: 'KeksBot Support Color Roles',
+    name: 'KeksBot Support Reaction Roles',
     event: 'ready',
     once: true,
     async on(client) {
@@ -10,8 +10,8 @@ module.exports = {
         let channel = await guild.channels.fetch('780008035678421022')
         var embed = new discord.MessageEmbed()
             .setColor(0xa051ae)
-            .setTitle('Farben')
-            .setDescription('Drücke auf einen Knopf, um dir eine Anzeigefarbe auszusuchen oder um wieder die normale Farbe zu nehmen')
+            .setTitle('Rollenauswahl')
+            .setDescription('Drücke auf einen Knopf, um dir eine Anzeigefarbe auszusuchen oder deine (Ping) Rollen zu ändern.')
         let message
         try {
             message = await channel.messages.fetch(data.roleColorMessageID)
@@ -22,11 +22,14 @@ module.exports = {
                     new discord.MessageButton()
                         .setCustomId('roles.color.pick')
                         .setLabel('Farbe aussuchen')
-                        .setStyle('SECONDARY')
-                    ,
+                        .setStyle('SECONDARY'),
                     new discord.MessageButton()
                         .setCustomId('roles.color.reset')
                         .setLabel('Farbe zurücksetzen')
+                        .setStyle('SECONDARY'),
+                    new discord.MessageButton()
+                        .setCustomId('roles.reaction.pick')
+                        .setLabel('Rollen aussuchen')
                         .setStyle('SECONDARY')
                 )
             message = await channel.send({ embeds: [embed], components: [buttons] })

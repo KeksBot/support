@@ -7,7 +7,7 @@ const { Guild } = require("discord.js")
  */
 
 module.exports = async (guild) => {
-    if(!guild) return { red: 0xff0000, lightblue: 0x3498db, lime: 0x2ecc71, yellow: 0xf1c40f, normal: 0x00b99b }
+    if(!guild) return { red: 0xff0000, lightblue: 0x3498db, lime: 0x2ecc71, yellow: 0xf1c40f, normal: 0xa051ae }
     if(!guild.data) guild.data = await require('../db/getData')('serverdata', guild.id)
     if(guild.data.theme) {
         let {
@@ -15,9 +15,9 @@ module.exports = async (guild) => {
             lightblue = 0x3498db,
             lime = 0x2ecc71,
             yellow = 0xf1c40f,
-            normal = 0x00b99b
+            normal = 0xa051ae
         } = guild.data.theme
-        if(normal == 'role') normal = guild.me?.displayHexColor || 0x00b99b
+        if(normal == 'role') normal = guild.me?.displayHexColor || 0xa051ae
         return { red, yellow, lime, normal, lightblue }
-    } else return { red: 0xff0000, lightblue: 0x3498db, lime: 0x2ecc71, yellow: 0xf1c40f, normal: 0x00b99b }
+    } else return { red: 0xff0000, lightblue: 0x3498db, lime: 0x2ecc71, yellow: 0xf1c40f, normal: 0xa051ae }
 }
