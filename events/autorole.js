@@ -27,7 +27,7 @@ module.exports = {
 					.setColor(0xa051ae)
 					.setTitle(`Willkommen, ${member.user.username}`)
 					.setDescription(
-						`Herzlich Willkommen auf dem KeksBot Support Server, <@${member.user.username}>.\nSolltest du Fragen, <#780004713038872596> oder <#780004599787945984>s äußern wollen, benutze bitte die dafür vorgesehenen Kanäle.\nAnsonsten wünschen wir dir viel Spaß auf dem Server :3`
+						`Herzlich Willkommen auf dem KeksBot Support Server, <@${member.id}>.\nSolltest du Fragen, <#780004713038872596> oder <#780004599787945984>s äußern wollen, benutze bitte die dafür vorgesehenen Kanäle.\nAnsonsten wünschen wir dir viel Spaß auf dem Server :3`
 					)
 				channel.send({ embeds: [embed] });
 			});
