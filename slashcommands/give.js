@@ -67,7 +67,7 @@ module.exports = {
         }
         embed = new discord.MessageEmbed()
             .setColor(color.normal)
-            .setTitle(`Kekse von ${user1.username} wurden überschrieben`)
+            .setTitle(args.overwrite ? `Kekse von ${user1.username} wurden überschrieben` : (args.count > 0 ? `${user1.username} hat Kekse erhalten` : `Kekse von ${user1.username} entfernt`))
             .setDescription(`${user1.tag} hat nun ${user1.data.cookies} Kekse`)
         await ita.reply({ embeds: [embed], ephemeral: !args.show_message })
     }
