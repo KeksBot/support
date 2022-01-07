@@ -1,7 +1,7 @@
 const discord = require('discord.js')
 const emotes = require('./emotes.json')
 const delay = require('delay')
-const getColors = require('./getcolor')
+const color = { red: 0xE62535, yellow: 0xF2E03F, lime: 0x25D971, normal: 0xa051ae }
 
 const translatepermission = (p) => {
     p = p.toUpperCase()
@@ -56,7 +56,6 @@ module.exports = {
      * @returns discord.Message
      */
     async errorMessage(msg, title, text, edit, keep) {
-        const color = await getColors(msg.guild)
         var embed = new discord.MessageEmbed()
             .setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
             .setColor(color.red)
@@ -81,7 +80,7 @@ module.exports = {
      * @returns {Promise <discord.Interaction>} Die Interaction vom Anfang
      */
     async error(ita, title, description, ephemeral, del) {
-        const color = ita.color || await getColors(ita.guild)
+        const color = ita.color || getColors(ita.guild)
         let embeds = [new discord.MessageEmbed()
             .setColor(color.red)
             .setTitle(`${emotes.denied} ${title}`)
@@ -105,7 +104,6 @@ module.exports = {
      */
     async needpermsMessage(msg, permission, edit, keep) {
         permission = translatepermission(permission)
-        const color = await getColors(msg.guild)
         var embed = new discord.MessageEmbed()
             .setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
             .setColor(color.red)
@@ -129,7 +127,7 @@ module.exports = {
      * @returns {Promise <discord.Interaction>} Die Interaction vom Anfang
      */
     async needperms(ita, permission, ephemeral, del) {
-        const color = ita.color || await getColors(ita.guild)
+        const color = ita.color || getColors(ita.guild)
         permission = translatepermission(permission)
         let embeds = [new discord.MessageEmbed()
             .setColor(color.red)
@@ -154,7 +152,6 @@ module.exports = {
      * @returns discord.Message
      */
     async successMessage(msg, title, text, edit, keep) {
-        const color = await getColors(msg.guild)
         var embed = new discord.MessageEmbed()
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
@@ -178,7 +175,7 @@ module.exports = {
      * @returns {Promise <discord.Interaction>} Die Interaction vom Anfang
      */
     async success(ita, title, description, ephemeral, del) {
-        const color = ita.color || await getColors(ita.guild)
+        const color = ita.color || getColors(ita.guild)
         let embeds = [new discord.MessageEmbed()
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
@@ -201,7 +198,6 @@ module.exports = {
      * @returns discord.Message
      */
     async syntaxerror(msg, syntax, edit, keep) {
-        const color = await getColors(msg.guild)
         var embed = new discord.MessageEmbed()
             .setColor(color.red)
             .setTitle(`${emotes.denied} Syntaxfehler`)

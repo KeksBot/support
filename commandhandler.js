@@ -5,51 +5,9 @@ const discord = require('discord.js')
 const delay = require('delay')
 
 const validatePermissions = (command) => {
-    const validPermissions = [
-        'ADMINISTRATOR',
-        'CREATE_INSTANT_INVITE',
-        'KICK_MEMBERS',
-        'BAN_MEMBERS',
-        'MANAGE_CHANNELS',
-        'MANAGE_GUILD',
-        'ADD_REACTIONS',
-        'VIEW_AUDIT_LOG',
-        'PRIORITY_SPEAKER',
-        'STREAM',
-        'VIEW_CHANNEL',
-        'SEND_MESSAGES',
-        'SEND_TTS_MESSAGES',
-        'MANAGE_MESSAGES',
-        'EMBED_LINKS',
-        'ATTACH_FILES',
-        'READ_MESSAGE_HISTORY',
-        'MENTION_EVERYONE',
-        'USE_EXTERNAL_EMOJIS',
-        'VIEW_GUILD_INSIGHTS',
-        'CONNECT',
-        'SPEAK',
-        'MUTE_MEMBER',
-        'DEAFEN_MEMBERS',
-        'MOVE_MEMBERS',
-        'USE_VAD',
-        'CHANGE_NICKNAME',
-        'MANAGE_NICKNAMES',
-        'MANAGE_ROLES',
-        'MANAGE_WEBHOOKS',
-        'MANAGE_EMOJIS_AND_STICKERS',
-        'USE_APPLICATION_COMMANDS',
-        'REQUEST_TO_SPEAK',
-        'MANAGE_THREADS',
-        'USE_PUBLIC_THREADS',
-        'USE_PRIVATE_THREADS',
-        'USE_EXTERNAL_STICKERS'
-    ]
+    const validPermissions = Object.keys(discord.Permissions.FLAGS)
     if(!validPermissions.includes(command.permission)) throw new Error(`Unbekannte Permission "${command.permission} bei "${command.name}"`)
 }
-
-const getcolors = require('./getcolor')
-const getData = require('./db/getData')
-const update = require('./db/update')
 
 module.exports = async (client) => {
     client.commands = new discord.Collection()
@@ -123,7 +81,6 @@ module.exports = async (client) => {
                             (name === 'mod') ? '775002147846488085' :
                             (name === 'dev') ? '779969450383507488' :
                             (name === 'sup') ? '779969700351180800' :
-                            (name === 'tsup') ? '792149101038927923' :
                             (name === 'team') ? '779991897880002561' : 
                             null
                     })
@@ -160,31 +117,6 @@ module.exports = async (client) => {
         if(ita.options.getSubcommand(false) || false) args.subcommand = ita.options.getSubcommand(false)
         if(ita.options.getSubcommandGroup(false) || false) args.subcommandgroup = ita.options.getSubcommandGroup(false)
 
-        //Daten laden
-        var status = {user: false, server: false}
-        getData('serverdata', ita.guild.id).then(async function(data) {
-            if(!data) data = await require('./db/create')('serverdata', ita.guild.id)
-            ita.guild.data = data
-            ita.color = await getcolors(ita.guild)
-            status.server = true
-        })
-        getData('userdata', ita.user.id).then(async function(data) {
-            if(!data) data = await require('./db/create')('userdata', ita.user.id)
-            ita.user.data = data
-            status.user = true
-        })
-
-        //Commandhandling
-        let cancel = setTimeout(function(status) {
-            if(!status.user) status.user = -1
-            if(!status.server) status.server = -1
-        }, 10000)
-        while(!status.user && !status.server) {await delay(50)}
-        clearTimeout(cancel)
-        if(!ita.guild.available) return
-        if(ita.user.data == -2) return
-        if(ita.user.data == -1 || ita.guild.data == -1) return embeds.error(ita, 'Fehler', 'Timeout der beim Laden erforderlichen Daten. Bitte probiere es später erneut.', true).catch()
-
         //Cooldown
         const { cooldowns } = client
         if(!cooldowns.has(command.name)) {
@@ -209,6 +141,7 @@ module.exports = async (client) => {
 
         //Execute
         try {
+            ita.color = { red: 0xE62535, yellow: 0xF2E03F, lime: 0x25D971, normal: 0xa051ae }
             let argsarray = []
             for (const item in args) {
                 argsarray.push(args[item])

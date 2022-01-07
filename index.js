@@ -1,28 +1,23 @@
 const discord = require('discord.js')
-const client  = new discord.Client({ intents: ['GUILDS', 'GUILD_BANS', 'GUILD_MEMBERS', 'GUILD_INVITES', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS']})
-const config  = require('./config.json')
+const client  = new discord.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_MESSAGES','GUILD_PRESENCES']})
 discord.Collection.prototype.array = function() {return [...this.values()]}
+require('dotenv').config()
+global.color = { red: 0xE62535, yellow: 0xF2E03F, lime: 0x25D971, normal: 0xa051ae }
+global.status = true
 
 var date = new Date()
 console.log(`Starte System am ${date.getDate()}.${date.getMonth() +1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
 
 client.once('ready', async () => { //Status
-    client.user.setStatus('idle')
-    client.restarting = 0
     var start = Date.now()
     console.log(`[${client.user.username}]: Client geladen.`)
     console.log(`[${client.user.username}]: System wird gestartet...`)
     client.setMaxListeners(0)
-    let mongoose = await require('./db/database')()
-    console.log(`[${client.user.username}]: Verbindung zur Datenbank hergestellt`)
-    mongoose.connection.close()
     await require('./commandhandler')(client)
     await require('./eventhandler')(client)
-    await require('./buttonhandler.js')(client)
     var end = Date.now()
     console.log(`[${client.user.username}]: System aktiv.`)
     console.log(`[${client.user.username}]: Startzeit betrug ${end - start} ms.`)
-    client.user.setStatus('online')
 })
 
-client.login(config.token)
+client.login(process.env.TOKEN)
