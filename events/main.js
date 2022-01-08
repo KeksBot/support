@@ -1,5 +1,6 @@
 const discord = require('discord.js')
 const https = require('https')
+require('dotenv').config()
 
 module.exports = {
     name: 'main',
@@ -11,6 +12,7 @@ module.exports = {
             channel.lastMessage :
             await channel.send('System wird gestartet...')
         var keksbot = await (await client.guilds.fetch('775001585541185546')).members.fetch('774885703929561089')
+        global.message = message
         //:Hug: für Alpi :3
 
         //Status überprüfen
@@ -19,7 +21,7 @@ module.exports = {
         //API Request
         function test() {
             if (message.embeds && message.embeds[0]?.color == global.color.yellow) return
-            https.get('https://uptime.alpakat2.com/api2?pass=gs6gw4avvw36a564wav446wa&id=keksbot', (res) => {
+            https.get(process.env.API, (res) => {
                 if (res.statusCode != 200) return console.error('Fehler beim Aufruf der API: ' + res.statusCode)
                 var data = ''
                 res.on('data', (chunk) => data += chunk)
