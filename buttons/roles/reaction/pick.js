@@ -8,19 +8,22 @@ module.exports = {
             .setColor(0xa051ae)
             .setTitle('<a:FlyingSmooch:628549586012733440> Rollenauswahl')
             .setDescription('Drück die Knöpfe, um Rollen an/aus zu schalten.\nWenn der Knopf grün ist, bekommst du die entsprechenden Benachrichtigungen.')
-        let buttons = new discord.MessageActionRow()
+        let buttons = [new discord.MessageActionRow()]
+        let index = 0
         for (const role in roles) {
             const button = new discord.MessageButton()
                 .setCustomId(`roles.reaction.pickRole!${role}`)
                 .setLabel(`${role}`)
                 .setStyle((
-                    function() {
+                    function () {
                         if(ita.member.roles.cache.has(roles[role])) return 'SUCCESS'
                         return 'DANGER'
                     }
                 )())
-            buttons.addComponents(button)
+            if(Math.floor((index / 5) + 0.2) != Math.floor(index / 5)) buttons.push(new discord.MessageActionRow())
+            buttons[Math.floor(index / 5)].addComponents(button)
+            index++
         }
-        await ita.reply({ embeds: [embed], components: [buttons], ephemeral: true })
+        await ita.reply({ embeds: [embed], components: buttons, ephemeral: true })
     }
 }
