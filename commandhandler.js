@@ -44,7 +44,7 @@ module.exports = async (client) => {
     var end = false
     await client.guilds.cache.array().forEach(async guild => {
         try {
-            let commands = await guild.commands.set(client.commands.array())
+            let commands = await guild.commands.add(client.commands.array())
             await guild.roles.fetch()
             commands.array().forEach(async function(command) {
                 if(client.commands.find(c => c.name === command.name).permission) {
