@@ -1,30 +1,32 @@
+const Discord = require('discord.js')
+
 module.exports = {
     name: 'status',
     description: 'Optionen zur Statusveränderung',
     options: [
         {
             name: 'set',
-            type: 'SUB_COMMAND',
+            type: Discord.ApplicationCommandOptionType.Subcommand,
             description: 'Manuelle Statuseingabe',
             options: [
                 {
                     name: 'title',
                     required: true,
                     description: 'Titel der Statusanzeige',
-                    type: 'STRING'
+                    type: Discord.ApplicationCommandOptionType.String
                 },
                 {
                     name: 'description',
                     required: true,
                     description: 'Beschreibung der Statusanzeige',
-                    type: 'STRING'
+                    type: Discord.ApplicationCommandOptionType.String
                 }
             ],
         },
         {
             name: 'reset',
             description: 'Status zurücksetzen',
-            type: 'SUB_COMMAND'
+            type: Discord.ApplicationCommandOptionType.Subcommand
         }
     ],
     roles: 'owner',

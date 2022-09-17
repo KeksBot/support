@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const fs = require('fs')
 const getData = require('../db/getData')
 const update = require('../db/update')
@@ -11,25 +11,25 @@ module.exports = {
     options: [
         {
             name: 'user',
-            type: 'USER',
+            type: Discord.ApplicationCommandOptionType.User,
             description: 'Nutzer, der Kekse bekommen soll',
             required: true
         },
         {
             name: 'count',
-            type: 'INTEGER',
+            type: Discord.ApplicationCommandOptionType.Integer,
             description: 'Anzahl der Kekse, die hinzugefügt/entfernt werden soll. (Negative Werte möglich)',
             required: true
         },
         {
             name: 'overwrite',
-            type: 'BOOLEAN',
+            type: Discord.ApplicationCommandOptionType.Boolean,
             description: 'Wenn true: Kekse des Nutzers werden auf count gesetzt. Standardmäßig false',
             required: false
         },
         {
             name: 'show-message',
-            type: 'BOOLEAN',
+            type: Discord.ApplicationCommandOptionType.Boolean,
             description: 'Wenn true wird die Antwort im Chat für alle angezeigt. Standardmäßig false',
             required: false
         }
@@ -44,7 +44,7 @@ module.exports = {
         let channel = await (await client.guilds.fetch('775001585541185546')).channels.fetch('801406480309289002')
         data.teamaction++
         fs.writeFileSync('data.json', JSON.stringify(data))
-        let embed = new discord.MessageEmbed()
+        let embed = new Discord.MessageEmbed()
             .setColor(color.normal)
             .setTitle(`Kontostand geändert (ID: ${data.teamaction})`)
             .setDescription(`${user} hat den Kontostand von **${user1.tag}** geändert.`)
@@ -65,7 +65,7 @@ module.exports = {
             await channel.send({ embeds: [embed] })
             await update('userdata', user1.id, { cookies: user1.data.cookies })
         }
-        embed = new discord.MessageEmbed()
+        embed = new Discord.MessageEmbed()
             .setColor(color.normal)
             .setTitle(args.overwrite ? `Kekse von ${user1.username} wurden überschrieben` : (args.count > 0 ? `${user1.username} hat Kekse erhalten` : `Kekse von ${user1.username} entfernt`))
             .setDescription(`${user1.tag} hat nun ${user1.data.cookies} Kekse`)

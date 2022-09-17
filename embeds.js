@@ -57,8 +57,8 @@ module.exports = {
      */
     async errorMessage(msg, title, text, edit, keep) {
         const color = await getColors(msg.guild)
-        var embed = new discord.MessageEmbed()
-            .setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
+        var embed = new discord.EmbedBuilder()
+            .setFooter({ text: msg.author.tag, iconURL: msg.author.avatarURL({dynamic: true})})
             .setColor(color.red)
             .setTitle(`${emotes.denied} ${title}`)
             .setDescription(text)
@@ -82,7 +82,7 @@ module.exports = {
      */
     async error(ita, title, description, ephemeral, del) {
         const color = ita.color || await getColors(ita.guild)
-        let embeds = [new discord.MessageEmbed()
+        let embeds = [new discord.EmbedBuilder()
             .setColor(color.red)
             .setTitle(`${emotes.denied} ${title}`)
             .setDescription(`${description}`)]
@@ -106,8 +106,8 @@ module.exports = {
     async needpermsMessage(msg, permission, edit, keep) {
         permission = translatepermission(permission)
         const color = await getColors(msg.guild)
-        var embed = new discord.MessageEmbed()
-            .setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
+        var embed = new discord.EmbedBuilder()
+            .setFooter({ text: msg.author.tag, iconURL: msg.author.avatarURL({dynamic: true})})
             .setColor(color.red)
             .setTitle(`${emotes.denied} Fehlende Berechtigung`)
             .setDescription(`Um diesen Befehl auszuführen, benötigst du \`${permission}\`.`)
@@ -131,7 +131,7 @@ module.exports = {
     async needperms(ita, permission, ephemeral, del) {
         const color = ita.color || await getColors(ita.guild)
         permission = translatepermission(permission)
-        let embeds = [new discord.MessageEmbed()
+        let embeds = [new discord.EmbedBuilder()
             .setColor(color.red)
             .setTitle(`${emotes.denied} Fehlende Berechtigung`)
             .setDescription(`Um diesen Befehl anzuwenden, benötigst du die Berechtigung \`${permission}\``)]
@@ -155,7 +155,7 @@ module.exports = {
      */
     async successMessage(msg, title, text, edit, keep) {
         const color = await getColors(msg.guild)
-        var embed = new discord.MessageEmbed()
+        var embed = new discord.EmbedBuilder()
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
             .setDescription(text)
@@ -179,7 +179,7 @@ module.exports = {
      */
     async success(ita, title, description, ephemeral, del) {
         const color = ita.color || await getColors(ita.guild)
-        let embeds = [new discord.MessageEmbed()
+        let embeds = [new discord.EmbedBuilder()
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
             .setDescription(`${description}`)]
@@ -202,7 +202,7 @@ module.exports = {
      */
     async syntaxerror(msg, syntax, edit, keep) {
         const color = await getColors(msg.guild)
-        var embed = new discord.MessageEmbed()
+        var embed = new discord.EmbedBuilder()
             .setColor(color.red)
             .setTitle(`${emotes.denied} Syntaxfehler`)
             .setDescription(`Bitte verwende diese Syntax:\n\`${syntax}\``)

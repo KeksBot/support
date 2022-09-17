@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const colorGroups = require('../../../colors.json')
 
 const colorArray = []
@@ -15,7 +15,7 @@ module.exports = {
         const color = ita.customId.split('!')[2]
         await ita.member.roles.remove(colorArray, 'Farbänderung')
         await ita.member.roles.add(colorGroups[group][color], 'Farbänderung')
-        const embed = new discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setColor(0xa051ae)
             .setTitle('<a:FlyingSmooch:628549586012733440> Farbauswahl abgeschlossen')
             .setDescription(`Du hast jetzt die Farbe ${color.split('')[0].toUpperCase()}${color.slice(1)}`)

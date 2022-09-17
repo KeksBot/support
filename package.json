@@ -18,7 +18,7 @@
   "homepage": "https://github.com/KeksBot/support#readme",
   "dependencies": {
     "delay": "^5.0.0",
-    "discord.js": "^13.3.1",
+    "discord.js": "^14.3.0",
     "fs": "^0.0.1-security",
     "mongoose": "^6.0.12"
   }

@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const { exec } = require('child_process')
 const path = require('path')
 const embeds = require('../embeds')
@@ -19,6 +19,10 @@ module.exports = {
                 {
                     name: 'keksbot support',
                     value: 'support'
+                },
+                {
+                    name: 'keksbot experimental',
+                    value: 'experimental'
                 }
             ],
             required: true
@@ -43,8 +47,8 @@ module.exports = {
     roles: 'owner',
     async execute(ita, args, client) {
         const { color } = ita
-        let cwd = (args.bot == 'keksbot') ? path.join(process.cwd(), require('../config.json').path) : process.cwd()
-        let embed = new discord.MessageEmbed()
+        let cwd = (args.bot == 'keksbot') ? path.join(process.cwd(), require('../config.json').path) : args.bot == 'experimental' ? path.join(process.cwd(), require('../config.json').expath) : process.cwd()
+        let embed = new Discord.MessageEmbed()
             .setColor(color.yellow)
             .setTitle('Update eingeleitet')
             .setDescription('Das Update wird in Kürze durchgeführt.')
@@ -53,21 +57,22 @@ module.exports = {
         if(args.bot == 'keksbot') exec(`git checkout ${args.branch}`, { cwd })
         exec(`git pull`, { cwd }, async function(error, stdout, stderr) {
             if(error) {
-                embed = new discord.MessageEmbed()
+                embed = new Discord.MessageEmbed()
                     .setColor(color.red)
                     .setDescription('Ein Fehler ist aufgetreten. Das Update wurde nicht oder unvollständig heruntergeladen.')
                     .setTitle('Fehler')
                 return await ita.editReply({ embeds: [embed] })
             }
             if(!stdout.toString().includes('Already up to date') || !stdout.toString().includes('Bereits aktuell')) {
-                embed = new discord.MessageEmbed()
+                embed = new Discord.MessageEmbed()
                     .setColor(color.yellow)
                     .setTitle('Update heruntergeladen')
                     .setDescription('Das Update wird nun installiert.')
                 await ita.editReply({ embeds: [embed] })
                 exec(`pm2 restart ${(function() {
                     if(args.bot == 'keksbot') return 'KeksBot'
-                    else return 'Support'
+                    else if(args.bot == 'experimental') return 'experimental'
+                    else return 'support'
                 })()}`)
             } else return embeds.error(ita, 'Fehler', 'Es ist bereits die aktuellste Version von der ausgewählten Branch installiert.')
         })

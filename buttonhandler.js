@@ -1,8 +1,9 @@
 const fs = require('fs')
 const path = require('path')
+const Discord = require('discord.js')
 
 module.exports = async (client) => {
-    buttons = []
+    const buttons = []
     const readButtons = dir => {
         const files = fs.readdirSync(path.join(__dirname, dir))
         for(const file of files) {
@@ -25,10 +26,10 @@ module.exports = async (client) => {
     readButtons('buttons')
     console.log(`[${client.user.username}]: ButtonInteractions geladen.`)
 
-    client.on('interactionCreate', async function(ita) {
-        if(!ita.isButton()) return
-        const button = buttons.find(b => b.id === ita.customId.replaceAll(/!.+/g, ''))
+    client.on('interactionCreate', async function(interaction) {
+        if(interaction.type != Discord.InteractionType.MessageComponent) return
+        const button = buttons.find(b => b.id === interaction.customId.replaceAll(/!.+/g, ''))
         if(!button) return
-        button.execute(ita, client)
+        button.execute(interaction, client)
     })
 }

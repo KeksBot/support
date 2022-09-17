@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 
 module.exports = {
     name: 'KeksBot Support Reaction Roles',
@@ -8,7 +8,7 @@ module.exports = {
         const data = require('../data.json')
         let guild = await client.guilds.fetch('775001585541185546')
         let channel = await guild.channels.fetch('780008035678421022')
-        var embed = new discord.MessageEmbed()
+        var embed = new Discord.EmbedBuilder()
             .setColor(0xa051ae)
             .setTitle('Rollenauswahl')
             .setDescription('Drücke auf einen Knopf, um dir eine Anzeigefarbe auszusuchen oder deine (Ping) Rollen zu ändern.')
@@ -17,20 +17,20 @@ module.exports = {
             message = await channel.messages.fetch(data.roleColorMessageID)
         } catch {}
         if(!message?.editable) {
-            let buttons = new discord.MessageActionRow()
+            let buttons = new Discord.ActionRowBuilder()
                 .addComponents(
-                    new discord.MessageButton()
+                    new Discord.ButtonBuilder()
                         .setCustomId('roles.color.pick')
                         .setLabel('Farbe aussuchen')
-                        .setStyle('SECONDARY'),
-                    new discord.MessageButton()
+                        .setStyle(Discord.ButtonStyle.Secondary),
+                    new Discord.ButtonBuilder()
                         .setCustomId('roles.color.reset')
                         .setLabel('Farbe zurücksetzen')
-                        .setStyle('SECONDARY'),
-                    new discord.MessageButton()
+                        .setStyle(Discord.ButtonStyle.Secondary),
+                    new Discord.ButtonBuilder()
                         .setCustomId('roles.reaction.pick')
                         .setLabel('Rollen aussuchen')
-                        .setStyle('SECONDARY')
+                        .setStyle(Discord.ButtonStyle.Secondary)
                 )
             message = await channel.send({ embeds: [embed], components: [buttons] })
             data.roleColorMessageID = message.id

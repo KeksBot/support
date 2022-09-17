@@ -1,4 +1,4 @@
-const discord = require('discord.js'),
+const Discord = require('discord.js'),
     getData = require('../db/getData'),
     update = require('../db/update'),
     fs = require('fs')
@@ -11,25 +11,25 @@ module.exports = {
     options: [
         {
             name: 'user',
-            type: 'USER',
+            type: Discord.ApplicationCommandOptionType.User,
             required: true,
             description: 'Der zu bannende Nutzer'
         },
         {
             name: 'unban',
-            type: 'BOOLEAN',
+            type: Discord.ApplicationCommandOptionType.Boolean,
             required: false,
             description: 'True, wenn der ausgewählte Nutzer entbannt werden soll. Standardmäßig false'
         },
         {
             name: 'duration',
-            type: 'STRING',
+            type: Discord.ApplicationCommandOptionType.String,
             required: false,
             description: 'Realtive Zeitangabe für temporäre Bans'
         },
         {
             name: 'reason',
-            type: 'STRING',
+            type: Discord.ApplicationCommandOptionType.String,
             required: false,
             description: 'Begründung für den Ban'
         }
@@ -50,7 +50,7 @@ module.exports = {
                 embeds.success(ita, 'Nutzer entbannt', `${user1.tag} wurde erfolgreich entbannt.`, true)
                 data.teamaction++
                 fs.writeFileSync('data.json', JSON.stringify(data))
-                let embed = new discord.MessageEmbed()
+                let embed = new Discord.EmbedBuilder()
                     .setColor(color.normal)
                     .setTitle(`Nutzer entbannt (ID: ${data.teamaction})`)
                     .setDescription(`${user} hat **${user1.tag}** entbannt.`)
@@ -79,14 +79,14 @@ module.exports = {
         await update('userdata', args.user, { banned: ban })
         data.teamaction++
         fs.writeFileSync('data.json', JSON.stringify(data))
-        let embed = new discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setColor(color.normal)
             .setTitle(`Nutzer gebannt (ID: ${data.teamaction})`)
             .setDescription(`${user} hat **${user1.tag}** gebannt.`)
         if(args.reason) embed.addField('Begründung', args.reason, true)
         if(time != -1) embed.addField('Automatische Aufhebung', `<t:${Math.floor(time / 1000)}:R>\n<t:${Math.floor(time / 1000)}>`, true)
         await channel.send({ embeds: [embed] })
-        embed = new discord.MessageEmbed()
+        embed = new Discord.EmbedBuilder()
             .setColor(color.lime)
             .setTitle('Nutzer gebannt')
             .setDescription(`${user1.tag} wurde erfolgreich gebannt.`)

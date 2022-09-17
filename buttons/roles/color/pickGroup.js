@@ -1,4 +1,4 @@
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const colorGroups = require('../../../colors.json')
 
 module.exports = {
@@ -8,17 +8,17 @@ module.exports = {
         if(!label) return require('../../../embeds').error(ita, 'Fehler', 'Die gesuchte Farbe wurde nicht gefunden :c')
         const colorGroup = colorGroups[label.toLowerCase()]
         if(!colorGroup) return require('../../../embeds').error(ita, 'Fehler', 'Die gesuchte Farbe wurde nicht gefunden :c')
-        const embed = new discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setTitle(`<a:FlyingSmooch:628549586012733440> Farbauswahl | ${label}`)
             .setDescription('Benutz die Knöpfe, um dir eine Farbe auszusuchen')
             .setColor(0xa051ae)
-        let buttons = new discord.MessageActionRow()
+        let buttons = new Discord.ActionRowBuilder()
         for (const color in colorGroup) {
             buttons.addComponents(
-                new discord.MessageButton()
+                new Discord.ButtonBuilder()
                     .setCustomId(`roles.color.pickColor!${label.toLowerCase()}!${color}`)
                     .setLabel(`${color.split('')[0].toUpperCase()}${color.slice(1)}`)
-                    .setStyle('SECONDARY')
+                    .setStyle(Discord.ButtonStyle.Secondary)
             )
         }
         await ita.update({ embeds: [embed], components: [buttons] })

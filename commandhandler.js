@@ -1,59 +1,16 @@
 const embeds = require('./embeds')
 const fs = require('fs')
 const path = require('path')
-const discord = require('discord.js')
+const Discord = require('discord.js')
 const delay = require('delay')
-
-const validatePermissions = (command) => {
-    const validPermissions = [
-        'ADMINISTRATOR',
-        'CREATE_INSTANT_INVITE',
-        'KICK_MEMBERS',
-        'BAN_MEMBERS',
-        'MANAGE_CHANNELS',
-        'MANAGE_GUILD',
-        'ADD_REACTIONS',
-        'VIEW_AUDIT_LOG',
-        'PRIORITY_SPEAKER',
-        'STREAM',
-        'VIEW_CHANNEL',
-        'SEND_MESSAGES',
-        'SEND_TTS_MESSAGES',
-        'MANAGE_MESSAGES',
-        'EMBED_LINKS',
-        'ATTACH_FILES',
-        'READ_MESSAGE_HISTORY',
-        'MENTION_EVERYONE',
-        'USE_EXTERNAL_EMOJIS',
-        'VIEW_GUILD_INSIGHTS',
-        'CONNECT',
-        'SPEAK',
-        'MUTE_MEMBER',
-        'DEAFEN_MEMBERS',
-        'MOVE_MEMBERS',
-        'USE_VAD',
-        'CHANGE_NICKNAME',
-        'MANAGE_NICKNAMES',
-        'MANAGE_ROLES',
-        'MANAGE_WEBHOOKS',
-        'MANAGE_EMOJIS_AND_STICKERS',
-        'USE_APPLICATION_COMMANDS',
-        'REQUEST_TO_SPEAK',
-        'MANAGE_THREADS',
-        'USE_PUBLIC_THREADS',
-        'USE_PRIVATE_THREADS',
-        'USE_EXTERNAL_STICKERS'
-    ]
-    if(!validPermissions.includes(command.permission)) throw new Error(`Unbekannte Permission "${command.permission} bei "${command.name}"`)
-}
 
 const getcolors = require('./getcolor')
 const getData = require('./db/getData')
 const update = require('./db/update')
 
 module.exports = async (client) => {
-    client.commands = new discord.Collection()
-    client.cooldowns = new discord.Collection()
+    client.commands = new Discord.Collection()
+    client.cooldowns = new Discord.Collection()
 
     const readCommands = dir => {
         const files = fs.readdirSync(path.join(__dirname, dir))
@@ -67,7 +24,6 @@ module.exports = async (client) => {
                     if(command.permission) {
                         command.defaultPermission = false
                         command.permission = command.permission.toUpperCase()
-                        validatePermissions(command)
                     }
                     if(command.roles) command.defaultPermission = false
                     client.commands.set(command.name, command)
@@ -84,93 +40,67 @@ module.exports = async (client) => {
     var progress = 0
     var failedguilds = 0
     var end = false
-    await client.guilds.cache.array().forEach(async guild => {
+    for (const guild of client.guilds.cache.array()) {
         try {
-            let commands = await guild.commands.set(client.commands.array())
-            await guild.roles.fetch()
-            commands.array().forEach(async function(command) {
-                if(client.commands.find(c => c.name === command.name).permission) {
-                    var permissions = []
-                    var length = guild.roles.cache
-                        .filter(r => !r.tags || (!r.tags.botId && r.tags.integrationId))
-                        .filter(r => r.permissions.has(client.commands.find(c => c.name === command.name).permission)).size
-                    var counter = 0
-                    var accepted = 0
-                    guild.roles.cache
-                        .filter(r => !r.tags || (!r.tags.botId && r.tags.integrationId))
-                        .filter(r => r.permissions.has(client.commands.find(c => c.name === command.name).permission))
-                        .array()
-                        .forEach(async function (role) {
-                            permissions.push({
-                                id: role.id,
-                                type: 'ROLE',
-                                permission: true
-                            })
-                            accepted ++
-                            counter ++
-                            if(accepted == 10 || counter == length - 1) {
-                                try {await command.permissions.add({permissions})} catch {}
-                                permissions = []
-                                accepted = 0
-                            }
-                        })
-                } else if(client.commands.find(c => c.name === command.name)) {
-                    var systemcommand = client.commands.find(c => c.name === command.name)
-                    if(typeof systemcommand.roles === 'string') systemcommand.roles = [systemcommand.roles]
-                    systemcommand.roles.forEach(name => {
-                        systemcommand.roles[systemcommand.roles.indexOf(name)] = 
-                            (name === 'owner') ? '779969055779061770' :
-                            (name === 'mod') ? '775002147846488085' :
-                            (name === 'dev') ? '779969450383507488' :
-                            (name === 'sup') ? '779969700351180800' :
-                            (name === 'tsup') ? '792149101038927923' :
-                            (name === 'team') ? '779991897880002561' : 
-                            null
+            await guild.commands.set(client.commands.filter(c => !c.global).array())
+            for (const command of client.commands.filter(c => c.roles).array()) {
+                if(typeof command.roles === 'string') command.roles = [command.roles]
+                command.roles.forEach(name => {
+                    command.roles[command.roles.indexOf(name)] = 
+                        (name === 'owner') ? '779969055779061770' :
+                        (name === 'mod') ? '775002147846488085' :
+                        (name === 'dev') ? '779969450383507488' :
+                        (name === 'sup') ? '779969700351180800' :
+                        (name === 'tsup') ? '792149101038927923' :
+                        (name === 'team') ? '779991897880002561' : 
+                        null
+                })
+                await guild.commands.permissions.set({
+                    command: guild.commands.cache.filter(c => c.name === command.name).first().id,
+                    permissions: command.roles.map(role => {
+                        return {
+                            id: role,
+                            type: 'ROLE',
+                            permission: true
+                        }
                     })
-                    var roles = []
-                    systemcommand.roles.forEach(r => roles.push({ 
-                        id: r,
-                        type: 'ROLE',
-                        permission: true
-                    }))
-                    try {await command.permissions.set( { permissions: roles } )} catch (error) { console.error }
-                }
-            })
+                })
+            }
         } catch (error) {
             console.error(error)
+            console.log(`[${client.user.username}]: Server nicht geladen: ${guild.id} | ${guild.name} | ${guild.ownerId}`)
             failedguilds++
         } finally {
             progress ++
             if(progress == client.guilds.cache.size) end = true
         }
-    })
-    while(!end) {await delay(500)}
+    }
     console.log(`[${client.user.username}]: Initialisierung abgeschlossen.`)
     if(failedguilds) console.log('Commands wurden auf ' + failedguilds + ' Servern NICHT geladen.')
 
-    client.on('interactionCreate', async function(ita) {
+    client.on('interactionCreate', async function(interaction) {
         //Commandhandling
-        if(!ita.isCommand()) return
-        let command = client.commands.get(ita.commandName)
+        if(interaction.type != Discord.InteractionType.ApplicationCommand) return
+        let command = client.commands.get(interaction.commandName)
         if(!command) {
-            return embeds.error(ita, 'Fehler', 'Der Befehl wurde nicht gefunden.', true, true)
+            return embeds.error(interaction, 'Fehler', 'Der Befehl wurde nicht gefunden.', true, true)
         }
         var args = {}
-        ita.options._hoistedOptions.forEach(option => args[option.name.replaceAll('-', '_')] = option.value)
-        if(ita.options.getSubcommand(false) || false) args.subcommand = ita.options.getSubcommand(false)
-        if(ita.options.getSubcommandGroup(false) || false) args.subcommandgroup = ita.options.getSubcommandGroup(false)
+        interaction.options._hoistedOptions.forEach(option => args[option.name.replaceAll('-', '_')] = option.value)
+        if(interaction.options.getSubcommand(false) || false) args.subcommand = interaction.options.getSubcommand(false)
+        if(interaction.options.getSubcommandGroup(false) || false) args.subcommandgroup = interaction.options.getSubcommandGroup(false)
 
         //Daten laden
         var status = {user: false, server: false}
-        getData('serverdata', ita.guild.id).then(async function(data) {
-            if(!data) data = await require('./db/create')('serverdata', ita.guild.id)
-            ita.guild.data = data
-            ita.color = await getcolors(ita.guild)
+        getData('serverdata', interaction.guild.id).then(async function(data) {
+            if(!data) data = await require('./db/create')('serverdata', interaction.guild.id)
+            interaction.guild.data = data
+            interaction.color = await getcolors(interaction.guild)
             status.server = true
         })
-        getData('userdata', ita.user.id).then(async function(data) {
-            if(!data) data = await require('./db/create')('userdata', ita.user.id)
-            ita.user.data = data
+        getData('userdata', interaction.user.id).then(async function(data) {
+            if(!data) data = await require('./db/create')('userdata', interaction.user.id)
+            interaction.user.data = data
             status.user = true
         })
 
@@ -181,31 +111,31 @@ module.exports = async (client) => {
         }, 10000)
         while(!status.user && !status.server) {await delay(50)}
         clearTimeout(cancel)
-        if(!ita.guild.available) return
-        if(ita.user.data == -2) return
-        if(ita.user.data == -1 || ita.guild.data == -1) return embeds.error(ita, 'Fehler', 'Timeout der beim Laden erforderlichen Daten. Bitte probiere es später erneut.', true).catch()
+        if(!interaction.guild.available) return
+        if(interaction.user.data == -2) return
+        if(interaction.user.data == -1 || interaction.guild.data == -1) return embeds.error(interaction, 'Fehler', 'Timeout der beim Laden erforderlichen Daten. Bitte probiere es später erneut.', true).catch()
 
         //Cooldown
         const { cooldowns } = client
         if(!cooldowns.has(command.name)) {
-            cooldowns.set(command.name, new discord.Collection())
+            cooldowns.set(command.name, new Discord.Collection())
         }
         
         const now = Date.now()
         const timestamps = cooldowns.get(command.name)
         const cooldownAmount = (command.cooldown || 1) * 1000
     
-        if(timestamps.has(ita.user.id)) {
-            const expirationTime = timestamps.get(ita.user.id) + cooldownAmount
+        if(timestamps.has(interaction.user.id)) {
+            const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount
         
             if(now < expirationTime) {
                 const timeLeft = Math.floor(expirationTime / 1000)
-                return embeds.error(ita, 'Cooldown', `Du kannst den ${command.name} Befehl erst wieder ${timeLeft} benutzen.`, true)
+                return embeds.error(interaction, 'Cooldown', `Du kannst den ${command.name} Befehl erst wieder ${timeLeft} benutzen.`, true)
             }
         }
         
-        timestamps.set(ita.user.id, now)
-        setTimeout(() => timestamps.delete(ita.user.id), cooldownAmount)
+        timestamps.set(interaction.user.id, now)
+        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
 
         //Execute
         try {
@@ -214,11 +144,11 @@ module.exports = async (client) => {
                 argsarray.push(args[item])
             }
             let d = new Date()
-            console.log(`${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} | ${ita.user.tag} | ID: ${ita.user.id} | ${ita.guild.name} | ID: ${ita.guild.id} | ${command.name} | [ ${argsarray.join(', ')} ]`)
-            await command.execute(ita, args, client)
+            console.log(`${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()} | ${interaction.user.tag} | ID: ${interaction.user.id} | ${interaction.guild.name} | ID: ${interaction.guild.id} | ${command.name} | [ ${argsarray.join(', ')} ]`)
+            await command.execute(interaction, args, client)
         } catch (error) {
             console.error(error)
-            return embeds.error(ita, 'Fehler', 'Beim Ausführen des Commands ist ein unbekannter Fehler aufgetreten.\nBitte probiere es später erneut.', true, true)
+            return embeds.error(interaction, 'Fehler', 'Beim Ausführen des Commands ist ein unbekannter Fehler aufgetreten.\nBitte probiere es später erneut.', true, true)
         }
     })
 }
