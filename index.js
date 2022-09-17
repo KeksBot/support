@@ -1,5 +1,5 @@
 const discord = require('discord.js')
-const client  = new discord.Client({ intents: ['Guilds', 'GuildBans', 'GuildMembers', 'GuildInvites', 'GuildEmojisAndStickers', 'GuildMessages', 'GeuildMessageReactions', 'GuildVoiceStates', 'DirectMessages', 'DirectMessageReactions'] })
+const client  = new discord.Client({ intents: ['Guilds', 'GuildBans', 'GuildMembers', 'GuildInvites', 'GuildEmojisAndStickers', 'GuildMessages', 'GuildMessageReactions', 'GuildVoiceStates', 'DirectMessages', 'DirectMessageReactions'] })
 const config  = require('./config.json')
 discord.Collection.prototype.array = function() {return [...this.values()]}
 

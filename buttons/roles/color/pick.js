@@ -6,7 +6,7 @@ module.exports = {
     id: 'roles.color.pick',
     async execute(ita, client) {
         const embed = new Discord.EmbedBuilder()
-            .setTitle('<a:FlyingSmooch:628549586012733440> Farbauswahl')
+            .setTitle('<a:FlyingSmooch:1020818822283931709> Farbauswahl')
             .setDescription('Benutz die Knöpfe, um dir einen Farbton auszusuchen')
             .setColor(0xa051ae)
         let buttons = new Discord.ActionRowBuilder()

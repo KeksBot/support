@@ -6,12 +6,12 @@ module.exports = {
     async execute(ita, client) {
         const embed = new Discord.EmbedBuilder()
             .setColor(0xa051ae)
-            .setTitle('<a:FlyingSmooch:628549586012733440> Rollenauswahl')
+            .setTitle('<a:FlyingSmooch:1020818822283931709> Rollenauswahl')
             .setDescription('Drück die Knöpfe, um Rollen an/aus zu schalten.\nWenn der Knopf grün ist, bekommst du die entsprechenden Benachrichtigungen.')
         let buttons = [new Discord.ActionRowBuilder()]
         let index = 0
         for (const role in roles) {
-            const button = new Discord.ButonBuilder()
+            const button = new Discord.ButtonBuilder()
                 .setCustomId(`roles.reaction.pickRole!${role}`)
                 .setLabel(`${role}`)
                 .setStyle((

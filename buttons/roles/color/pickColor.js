@@ -17,7 +17,7 @@ module.exports = {
         await ita.member.roles.add(colorGroups[group][color], 'Farbänderung')
         const embed = new Discord.EmbedBuilder()
             .setColor(0xa051ae)
-            .setTitle('<a:FlyingSmooch:628549586012733440> Farbauswahl abgeschlossen')
+            .setTitle('<a:FlyingSmooch:1020818822283931709> Farbauswahl abgeschlossen')
             .setDescription(`Du hast jetzt die Farbe ${color.split('')[0].toUpperCase()}${color.slice(1)}`)
         await ita.update({ embeds: [embed], components: [] })
     }

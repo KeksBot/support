@@ -9,7 +9,7 @@ module.exports = {
         const colorGroup = colorGroups[label.toLowerCase()]
         if(!colorGroup) return require('../../../embeds').error(ita, 'Fehler', 'Die gesuchte Farbe wurde nicht gefunden :c')
         const embed = new Discord.EmbedBuilder()
-            .setTitle(`<a:FlyingSmooch:628549586012733440> Farbauswahl | ${label}`)
+            .setTitle(`<a:FlyingSmooch:1020818822283931709> Farbauswahl | ${label}`)
             .setDescription('Benutz die Knöpfe, um dir eine Farbe auszusuchen')
             .setColor(0xa051ae)
         let buttons = new Discord.ActionRowBuilder()

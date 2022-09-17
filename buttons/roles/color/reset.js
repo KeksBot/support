@@ -12,9 +12,9 @@ module.exports = {
     id: 'roles.color.reset',
     async execute(ita, client) {
         await ita.member.roles.remove(colorArray, 'Farbe zurückgesetzt')
-        const embed = new Discord.ButtonBuilder()
+        const embed = new Discord.EmbedBuilder()
             .setColor(0xa051ae)
-            .setTitle('<a:FlyingSmooch:628549586012733440> Farbe zurückgesetzt')
+            .setTitle('<a:FlyingSmooch:1020818822283931709> Farbe zurückgesetzt')
             .setDescription('Du hast jetzt wieder deine normale Farbe')
         await ita.reply({ embeds: [embed] , ephemeral: true })
     }
