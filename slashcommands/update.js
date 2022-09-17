@@ -48,7 +48,7 @@ module.exports = {
     async execute(ita, args, client) {
         const { color } = ita
         let cwd = (args.bot == 'keksbot') ? path.join(process.cwd(), require('../config.json').path) : args.bot == 'experimental' ? path.join(process.cwd(), require('../config.json').expath) : process.cwd()
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setColor(color.yellow)
             .setTitle('Update eingeleitet')
             .setDescription('Das Update wird in Kürze durchgeführt.')
@@ -57,14 +57,14 @@ module.exports = {
         if(args.bot == 'keksbot') exec(`git checkout ${args.branch}`, { cwd })
         exec(`git pull`, { cwd }, async function(error, stdout, stderr) {
             if(error) {
-                embed = new Discord.MessageEmbed()
+                embed = new Discord.EmbedBuilder()
                     .setColor(color.red)
                     .setDescription('Ein Fehler ist aufgetreten. Das Update wurde nicht oder unvollständig heruntergeladen.')
                     .setTitle('Fehler')
                 return await ita.editReply({ embeds: [embed] })
             }
             if(!stdout.toString().includes('Already up to date') || !stdout.toString().includes('Bereits aktuell')) {
-                embed = new Discord.MessageEmbed()
+                embed = new Discord.EmbedBuilder()
                     .setColor(color.yellow)
                     .setTitle('Update heruntergeladen')
                     .setDescription('Das Update wird nun installiert.')
