@@ -43,29 +43,6 @@ module.exports = async (client) => {
     for (const guild of client.guilds.cache.array()) {
         try {
             await guild.commands.set(client.commands.filter(c => !c.global).array())
-            for (const command of client.commands.filter(c => c.roles).array()) {
-                if(typeof command.roles === 'string') command.roles = [command.roles]
-                command.roles.forEach(name => {
-                    command.roles[command.roles.indexOf(name)] = 
-                        (name === 'owner') ? '779969055779061770' :
-                        (name === 'mod') ? '775002147846488085' :
-                        (name === 'dev') ? '779969450383507488' :
-                        (name === 'sup') ? '779969700351180800' :
-                        (name === 'tsup') ? '792149101038927923' :
-                        (name === 'team') ? '779991897880002561' : 
-                        null
-                })
-                await guild.commands.permissions.set({
-                    command: guild.commands.cache.filter(c => c.name === command.name).first().id,
-                    permissions: command.roles.map(role => {
-                        return {
-                            id: role,
-                            type: 'ROLE',
-                            permission: true
-                        }
-                    })
-                })
-            }
         } catch (error) {
             console.error(error)
             console.log(`[${client.user.username}]: Server nicht geladen: ${guild.id} | ${guild.name} | ${guild.ownerId}`)

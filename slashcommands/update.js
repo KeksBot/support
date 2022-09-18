@@ -10,7 +10,7 @@ module.exports = {
         {
             name: 'bot',
             description: 'Welcher Bot geupdatet werden soll',
-            type: 'STRING',
+            type: Discord.ApplicationCommandOptionType.String,
             choices: [
                 {
                     name: 'keksbot',
@@ -30,7 +30,7 @@ module.exports = {
         {
             name: 'branch',
             description: 'Von welcher Branch gepullt werden soll',
-            type: 'STRING',
+            type: Discord.ApplicationCommandOptionType.String,
             choices: [
                 {
                     name: 'main',

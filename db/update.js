@@ -1,7 +1,7 @@
 const db = require('./database')
 const path = require('path')
 const fs = require('fs')
-const { Collection } = require('discord.js')
+const { Collection, Guild, User } = require('discord.js')
 const { Model } = require('mongoose')
 const schemas = new Collection()
 
@@ -43,4 +43,22 @@ module.exports = async function(name, id, value) {
     } catch (error) {
         return error
     }
+}
+
+Guild.prototype.setData = async function(value) {
+    this.data = await set('serverdata', this.id, value)
+    return this.data
+}
+
+User.prototype.setData = async function(value) {
+    this.data = await set('userdata', this.id, value)
+    return this.data
+}
+
+User.prototype.save = async function() {
+    return await this.setData(this.data)
+}
+
+Guild.prototype.save = async function() {
+    return await this.setData(this.data)
 }

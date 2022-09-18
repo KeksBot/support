@@ -44,4 +44,5 @@ var serverdataSchema = mongoose.Schema({
     ]
 }, { strict: false })
 
-module.exports = mongoose.model('serverdata', serverdataSchema)
+const model = mongoose.model('serverdata', serverdataSchema)
+module.exports = model

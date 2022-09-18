@@ -22,4 +22,5 @@ var userdataSchema = mongoose.Schema({
     tan: String
 }, { strict: false })
 
-module.exports = mongoose.model('userdata', userdataSchema)
+const model = mongoose.model('userdata', userdataSchema)
+module.exports = model
