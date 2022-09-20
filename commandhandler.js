@@ -33,7 +33,7 @@ module.exports = async (client) => {
             }
         }
     }
-    console.log(`[${client.user.username}]: Commands werden geladen.`)
+    console.log(`[${client.user.username}]: Commands werden geladen...`)
     readCommands('./slashcommands')
     console.log(`[${client.user.username}]: Commands werden initialisiert.`)
     await client.guilds.fetch()

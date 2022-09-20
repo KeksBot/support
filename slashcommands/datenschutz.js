@@ -70,7 +70,7 @@ module.exports = {
                 interaction = await interaction.awaitModalSubmit({ time: 120000 }).catch(e => {return null})
                 if(!interaction) return
                 if(interaction.components[1].components[0].value == interaction.user.tag) {
-                    let { err, doc } = await userdata.findByIdAndRemove(interaction.user.id) 
+                    let { err } = await userdata.findByIdAndRemove(interaction.user.id) 
                     if(err) {
                         return embeds.error(interaction, 'Fehler', 'Beim Löschen deiner Daten ist ein Fehler aufgetreten. Bitte kontaktiere <@514089658833960963> per DM, um eine manuelle Löschung zu beantragen.\nWir entschuldigen uns für die Unannehmlichkeiten.', true)
                     }
@@ -85,7 +85,7 @@ module.exports = {
                 break
             }
             case 'show': {
-                let regex = /[\w0-9]+/
+                let regex = /[\w0-9_\-.]+/
                 let attachment = new Discord.AttachmentBuilder()
                     .setFile(Buffer.from(JSON.stringify(interaction.user.data, null, 4), 'utf-8'))
                     .setName(`${(interaction.user.username.match(regex) || ['data']).join('')}.json`)

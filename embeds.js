@@ -58,14 +58,10 @@ module.exports = {
     async errorMessage(msg, title, text, edit, keep) {
         const color = await getColors(msg.guild)
         var embed = new Discord.EmbedBuilder()
-            .setFooter({ text: msg.author.tag, iconURL: msg.author.avatarURL({dynamic: true})})
             .setColor(color.red)
             .setTitle(`${emotes.denied} ${title}`)
             .setDescription(text)
-        if(!edit) {
-            embed.setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
-            var message = await msg.channel.send({embeds: [embed], components: []})
-        }
+        if(!edit) var message = await msg.channel.send({embeds: [embed], components: []})
         else var message = await msg.edit({embeds: [embed], components: []}).catch()
         await delay(7500)
         if(!keep && message.deletable) message.delete().catch()
@@ -86,7 +82,6 @@ module.exports = {
             .setColor(color.red)
             .setTitle(`${emotes.denied} ${title}`)
             .setDescription(`${description}`)]
-        if(!ephemeral) embeds[0].setFooter(ita.user.tag, ita.user.avatarURL({dynamic: true}))
         if(ita.deferred || ita.replied) await ita.editReply({ embeds, ephemeral, components: [] })
         else await ita.reply({ embeds, ephemeral })
         if(!ephemeral && del) {
@@ -107,14 +102,10 @@ module.exports = {
         permission = translatepermission(permission)
         const color = await getColors(msg.guild)
         var embed = new Discord.EmbedBuilder()
-            .setFooter({ text: msg.author.tag, iconURL: msg.author.avatarURL({dynamic: true})})
             .setColor(color.red)
             .setTitle(`${emotes.denied} Fehlende Berechtigung`)
             .setDescription(`Um diesen Befehl auszuführen, benötigst du \`${permission}\`.`)
-        if(!edit) {
-            embed.setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
-            var message = await msg.channel.send({embeds: [embed]})
-        }
+        if(!edit) var message = await msg.channel.send({embeds: [embed]})
         else var message = await msg.edit({embeds: [embed]}).catch()
         await delay(7500)
         if(!keep && message.deletable) message.delete().catch()
@@ -135,7 +126,6 @@ module.exports = {
             .setColor(color.red)
             .setTitle(`${emotes.denied} Fehlende Berechtigung`)
             .setDescription(`Um diesen Befehl anzuwenden, benötigst du die Berechtigung \`${permission}\``)]
-        if(!ephemeral) embeds[0].setFooter(ita.user.tag, ita.user.avatarURL({dynamic: true}))
         if(ita.deferred || ita.replied) await ita.editReply({ embeds, ephemeral, components: [] })
         else await ita.reply({ embeds, ephemeral })
         if(!ephemeral && del) {
@@ -159,10 +149,7 @@ module.exports = {
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
             .setDescription(text)
-        if(!edit) {
-            embed.setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
-            var message = await msg.channel.send({embeds: [embed], components: []})
-        }
+        if(!edit) var message = await msg.channel.send({embeds: [embed], components: []})
         else var message = await msg.edit({embeds: [embed], components: []}).catch()
         await delay(7500)
         if(!keep && message.deletable) message.delete().catch()
@@ -183,7 +170,6 @@ module.exports = {
             .setColor(color.lime)
             .setTitle(`${emotes.accept} ${title}`)
             .setDescription(`${description}`)]
-        if(!ephemeral) embeds[0].setFooter(ita.user.tag, ita.user.avatarURL({dynamic: true}))
         if(ita.deferred || ita.replied) await ita.editReply({ embeds, ephemeral, components: [] })
         else await ita.reply({ embeds, ephemeral })
         if(!ephemeral && del) {
@@ -206,10 +192,7 @@ module.exports = {
             .setColor(color.red)
             .setTitle(`${emotes.denied} Syntaxfehler`)
             .setDescription(`Bitte verwende diese Syntax:\n\`${syntax}\``)
-        if(!edit) {
-            embed.setFooter(msg.author.tag, msg.author.avatarURL({dynamic: true}))
-            var message = await msg.channel.send({embeds: [embed]})
-        }
+        if(!edit) var message = await msg.channel.send({embeds: [embed]})
         else var message = await msg.edit({embeds: [embed]}).catch()
         await delay(7500)
         if(!keep && message.deletable) message.delete().catch()

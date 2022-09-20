@@ -21,7 +21,7 @@ module.exports = async (client, reload) => {
             }
         }
     }
-    if(!reload) console.log(`[${client.user.username}]: Events werden geladen.`)
+    if(!reload) console.log(`[${client.user.username}]: Events werden geladen...`)
     readEvents('./events')
     if(!reload) console.log(`[${client.user.username}]: Events geladen.`)
 
