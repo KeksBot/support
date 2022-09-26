@@ -46,12 +46,12 @@ module.exports = async function(name, id, value) {
 }
 
 Guild.prototype.setData = async function(value) {
-    this.data = await set('serverdata', this.id, value)
+    this.data = await module.exports('serverdata', this.id, value)
     return this.data
 }
 
 User.prototype.setData = async function(value) {
-    this.data = await set('userdata', this.id, value)
+    this.data = await module.exports('userdata', this.id, value)
     return this.data
 }
 

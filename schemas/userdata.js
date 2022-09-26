@@ -19,8 +19,34 @@ var userdataSchema = mongoose.Schema({
         time: Number,
         reason: String
     },
-    tan: String
-}, { strict: false })
+    battle: {
+        skills: [
+            {
+                _id: false,
+                name: String,
+                value: Number
+            }
+        ],
+        ready: Boolean,
+        priority: String,
+        currentHP: Number,
+        healTimestamp: Number,
+        inventory: [{
+            id: Number,
+            count: Number,
+            _id: false
+        }],
+        attacks: [Number],
+    },
+    system: {
+        user: String,
+        bounduser: String,
+        password: String,
+        username: String,
+        permissionLevel: Number,
+        _id: false
+    }
+}, { strict: true })
 
 const model = mongoose.model('userdata', userdataSchema)
 module.exports = model
