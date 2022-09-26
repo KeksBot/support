@@ -15,7 +15,8 @@ module.exports = {
         return {
             success: true,
             message: `'${user.tag}' ist nun ausgeloggt`,
-            userId: id
+            userId: id,
+            showMessage: true
         }
     }
 }

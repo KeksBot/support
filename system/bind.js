@@ -1,4 +1,5 @@
 const SystemError = require('./!error')
+const getData = require('../db/getData')
 
 module.exports = {
     name: 'bind',
@@ -20,7 +21,7 @@ module.exports = {
             let hash = crypto.createHmac('sha256', secret).update(password).digest('base64')
             if(systemuser.system.password != hash) throw new SystemError('authentifizierung fehlgeschlagen', 'Authentifizierungsfehler | login')
         }
-        bounduser = await client.users.fetch(bounduser)
+        bounduser = await interaction.client.users.fetch(bounduser)
         if(!bounduser) throw new SystemError('argument `<user>` ist ungültig', 'Syntaxfehler | bind')
         if(systemuser.system?.bounduser && !args.includes('--force') && !args.includes('-f')) throw new SystemError('systemuser ist bereits einem anderen nutzer zugeordnet\nVerwende `--force`, um eine überschreibung zu erzwingen', 'Fehler | bind')
         if(systemuser.system?.bounduser && (args.includes('--force') || args.includes('-f')) && user.data.system.permissionLevel <= systemuser.system?.permissionLevel) throw new SystemError('die verwendung von `--force` zum überschreiben bereits existenter verbindungen erfordert eine höhere Systemberechtigungsstufe', 'Berechtigungsfehler | bind')
@@ -30,6 +31,7 @@ module.exports = {
         return {
             success: true,
             message: `'${bounduser.tag}' ist nun mit '${id}' verbunden`,
+            showMessage: true
         }
     }
 }

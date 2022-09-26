@@ -18,7 +18,7 @@ module.exports = {
 
         let id = _args[0]
         if(await getData('userdata', id)) throw new SystemError(`nutzer "${id}" existiert bereits`, 'Fehler | create')
-        let permissionLevel = parseInt(args.find(a => a.startsWith('--permissionLevel') || a.startsWith('-pl')).split(' ')[1]) || 0
+        let permissionLevel = parseInt(args.find(a => a.startsWith('--permissionLevel') || a.startsWith('-pl'))?.split(' ')[1]) || 0
         if(isNaN(permissionLevel)) throw new SystemError('argument `--permissionLevel` ist keine zahl', 'Syntaxfehler |create')
         if(permissionLevel < 0 || permissionLevel > 3) throw new SystemError('argument `--permissionLevel` ist nicht zwischen 0 und 3', 'Syntaxfehler | create')
         while (permissionLevel >= interaction.user.data.system.permissionLevel) permissionLevel--
