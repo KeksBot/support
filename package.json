@@ -4,6 +4,7 @@
   "description": "KeksBot Support Bot",
   "main": "index.js",
   "scripts": {
+    "start": "node index",
     "test": "node index --debug"
   },
   "repository": {
